@@ -1,0 +1,39 @@
+<Project>
+    <!-- StyleCop Analyzers configuration -->
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)StyleCop.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
+    <PropertyGroup>
+        <RestorePackagesWithLockFile Condition="'$(UsingMicrosoftNETSdk)' == 'true'">true</RestorePackagesWithLockFile>
+        <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <IsPackable>false</IsPackable>
+        <TargetFramework>net10.0</TargetFramework>
+		<RootNamespace>Eryri.$(MSBuildProjectName)</RootNamespace>
+		<AssemblyName>Eryri.$(MSBuildProjectName)</AssemblyName>
+		<NoWarn>$(NoWarn);NU1902;NU1903</NoWarn>
+    </PropertyGroup>
+	<ItemGroup Condition="'$(IsTestProject)'=='true'">
+		<PackageReference Include="AutoFixture" />
+		<PackageReference Include="coverlet.collector" />
+		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" />
+		<Using Include="NUnit.Framework" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../README.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="stylecop.json" />
+    <File Path="StyleCop.ruleset" />
+  </Folder>
+  <Project Path="WriteAheadLog.Tests/WriteAheadLog.Tests.csproj" Id="1b323d30-66a0-4fab-8d3d-dbf4139a012f" />
+  <Project Path="WriteAheadLog/WriteAheadLog.csproj" />
+</Solution>
