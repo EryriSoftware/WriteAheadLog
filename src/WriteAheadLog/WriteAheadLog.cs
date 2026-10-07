@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.IO.Pipelines;
 using System.Threading.Channels;
 using Eryri.Buffers;
 using Eryri.Buffers.Extensions;
@@ -57,7 +58,9 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
         }
 
         fs.Seek(0, SeekOrigin.Begin);
+        fs.SetLength(0);
         fs.Write(FormatVersion);
+        fs.Flush(true);
 
         void Delete(string path)
         {
@@ -142,7 +145,11 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
                 options: FileOptions.Asynchronous | FileOptions.SequentialScan))
             {
                 stream.Write(logStream.Checkpoint);
-                await WriteSnapshotAsync(stream, cancellationToken);
+                await using (var readStream = stream.AsWriteOnly(cancellationToken))
+                {
+                    await WriteSnapshotAsync(readStream.Stream, cancellationToken);
+                }
+
                 stream.Flush(true);
             }
 
@@ -176,7 +183,10 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
                 options: FileOptions.Asynchronous | FileOptions.SequentialScan);
 
                 checkpoint = stream.ReadCheckpoint();
-                await ReadSnapshotAsync(stream, cancellationToken);
+                await using (var readStream = stream.AsReadOnly(cancellationToken))
+                {
+                    await ReadSnapshotAsync(readStream.Stream, cancellationToken);
+                }
             }
 
             await foreach (var item in logStream.Read(cancellationToken, checkpoint))
