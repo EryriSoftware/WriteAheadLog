@@ -9,9 +9,20 @@ using Eryri.WriteAheadLog.Models;
 
 namespace Eryri.WriteAheadLog;
 
+/// <summary>
+/// A concrete WAL implementation supplies the application-specific serialization, deserialization, state application and snapshot logic.
+/// </summary>
 public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncDisposable
 {
+    /// <summary>
+    /// Gets the current implementation's `FormatVersion`
+    /// If the stored version differs from the current implementation's `FormatVersion`, the existing WAL and snapshot are discarded and a new state is created.
+    /// </summary>
     protected abstract ulong FormatVersion { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether gets whether the WAL is disposed or not.
+    /// </summary>
     protected bool IsDisposed { get; private set; }
     private bool initialized;
     private bool hasChanges = false;
@@ -33,6 +44,9 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
         AllowSynchronousContinuations = false
     });
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WriteAheadLog{T}"/> class.
+    /// </summary>
     protected WriteAheadLog(string directory)
     {
         this.directory = directory;
@@ -159,6 +173,10 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
         }
     }
 
+    /// <summary>
+    /// Initialize the WAL before recovery is required:
+    /// Commands may also be queued before initialization. They remain in the WAL's internal channel and are processed after initialization has completed recovery and started the background consumer.
+    /// </summary>
     public virtual async Task InitializeAsync(CancellationToken cancellationToken)
     {
         ThrowIfDisposed();
@@ -239,6 +257,7 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
         await command.Task.WaitAsync(cancellationToken);
     }
 
+    /// <inheritdoc />
     public virtual async ValueTask DisposeAsync()
     {
         if (!IsDisposed)
@@ -258,6 +277,7 @@ public abstract class WriteAheadLog<T> : IWriteAheadLog<T>, IDisposable, IAsyncD
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Dispose(true);

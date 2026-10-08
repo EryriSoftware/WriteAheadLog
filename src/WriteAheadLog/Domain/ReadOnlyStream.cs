@@ -2,12 +2,12 @@
 
 namespace Eryri.WriteAheadLog.Domain;
 
-public sealed class ReadOnlyStream : IStreamOwner, IAsyncDisposable, IDisposable
+internal sealed class ReadOnlyStream : IStreamOwner, IAsyncDisposable, IDisposable
 {
     public Stream Stream { get; private init; }
     private readonly Pipe pipe;
     private readonly Task copyTask;
-    public ReadOnlyStream(Stream sourceStream, CancellationToken cancellationToken)
+    internal ReadOnlyStream(Stream sourceStream, CancellationToken cancellationToken)
     {
         pipe = new Pipe();
         copyTask = sourceStream.CopyToAsync(pipe.Writer, cancellationToken);

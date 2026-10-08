@@ -1,5 +1,6 @@
 ﻿namespace Eryri.WriteAheadLog;
 
+/// <summary>Used to determine the level of durability for each item appended to the log.</summary>
 public enum Durability
 {
     /// <summary>Queue the record without waiting for persistence.</summary>

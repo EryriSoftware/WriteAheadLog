@@ -8,13 +8,13 @@ internal static class StreamExtensions
 {
     extension(Stream stream)
     {
-        public void Write(Checkpoint checkpoint)
+        internal void Write(Checkpoint checkpoint)
         {
             stream.Write(checkpoint.Generation);
             stream.Write(checkpoint.Position);
         }
 
-        public Checkpoint ReadCheckpoint() =>
+        internal Checkpoint ReadCheckpoint() =>
             new Checkpoint(
             Generation: stream.ReadGuid(),
             Position: stream.ReadLong());

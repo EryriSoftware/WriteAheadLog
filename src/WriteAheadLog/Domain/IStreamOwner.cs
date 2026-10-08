@@ -1,6 +1,9 @@
 ﻿namespace Eryri.WriteAheadLog.Domain;
 
-internal interface IStreamOwner : IAsyncDisposable, IDisposable
+public interface IStreamOwner : IAsyncDisposable, IDisposable
 {
+    /// <summary>
+    /// Gets the Stream.
+    /// </summary>
     public Stream Stream { get; }
 }
