@@ -13,7 +13,8 @@
 		<PackageId>Eryri.WriteAheadLog</PackageId>
 		<Authors>Osian Linton</Authors>
 		<Description>A lightweight, high-performance **write-ahead log (WAL)** for .NET applications that need fast local persistence and restart recovery without introducing a database.</Description>
-		<PackageTags>wal;write-ahead-log;local-persistence;state-persistence;crash-recovery;recovery;append-only;dotnet;.net;performance</PackageTags>		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>wal;write-ahead-log;local-persistence;state-persistence;crash-recovery;recovery;append-only;dotnet;.net;performance</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/EryriSoftware/WriteAheadLog</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/EryriSoftware/WriteAheadLog</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
